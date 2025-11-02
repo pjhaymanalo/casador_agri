@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Order - Secretary</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    :root {
+      --primary: #2E7D32;      /* 10% - Deep Forest Green */
+      --secondary: #A5D6A7;    /* 30% - Soft Green */
+      --light-bg: #FAFAFA;     /* 60% - Off-white background */
+      --white: #FFFFFF;        /* Pure white for containers */
+      --text-dark: #212529;    /* Text color */
+      --text-light: #6C757D;   /* Secondary text */
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: var(--text-dark);
+      background-color: var(--light-bg); /* 60% Off-white */
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Professional Background Elements */
+    .background-design {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    /* Subtle grid pattern */
+    .grid-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+          linear-gradient(rgba(46, 125, 50, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(46, 125, 50, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      opacity: 0.4;
+    }
+
+    /* Geometric shapes */
+    .shape-1 {
+      position: absolute;
+      top: 10%;
+      right: 5%;
+      width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, rgba(165, 214, 167, 0.1) 0%, rgba(46, 125, 50, 0.05) 100%);
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .shape-2 {
+      position: absolute;
+      bottom: 15%;
+      left: 5%;
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(135deg, rgba(165, 214, 167, 0.08) 0%, rgba(46, 125, 50, 0.03) 100%);
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      animation: float 12s ease-in-out infinite reverse;
+    }
+
+    .shape-3 {
+      position: absolute;
+      top: 60%;
+      right: 15%;
+      width: 150px;
+      height: 150px;
+      background: linear-gradient(135deg, rgba(165, 214, 167, 0.06) 0%, rgba(46, 125, 50, 0.02) 100%);
+      border-radius: 50% 20% 70% 40% / 60% 70% 30% 40%;
+      animation: float 10s ease-in-out infinite;
+    }
+
+    /* Subtle lines */
+    .line-1 {
+      position: absolute;
+      top: 20%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(46, 125, 50, 0.1) 20%, rgba(46, 125, 50, 0.1) 80%, transparent 100%);
+    }
+
+    .line-2 {
+      position: absolute;
+      bottom: 30%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(46, 125, 50, 0.08) 30%, rgba(46, 125, 50, 0.08) 70%, transparent 100%);
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-20px) rotate(5deg);
+      }
+    }
+
+    /* Navbar Styling - 30% Soft Green */
+    .navbar {
+      background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%); /* 30% Soft Green */
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      padding: 1rem 2rem;
+      color: var(--text-dark);
+    }
+
+    .navbar-brand {
+      color: var(--text-dark) !important;
+      font-weight: 700;
+    }
+
+    .navbar-dark .navbar-nav .nav-link {
+      color: var(--text-dark);
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 2rem 3rem;
+      background-color: var(--light-bg); /* 60% Off-white */
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Card Styling */
+    .form-card {
+      background-color: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.07);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+
+    .table-card {
+      background-color: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.07);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+
+    .table-card-header {
+      background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%);
+      color: white;
+      padding: 1.2rem 1.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.3px;
+    }
+
+    /* Button Styling - All Green Variations */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%); /* 10% Deep Forest Green */
+      border: none;
+      padding: 0.85rem 2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: all 0.4s ease;
+      box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #1B5E20 0%, var(--primary) 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(46, 125, 50, 0.4);
+      color: white;
+    }
+
+    /* Green Outline Button for Back Button */
+    .btn-outline-success {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      padding: 0.85rem 2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: all 0.4s ease;
+      background: transparent;
+    }
+
+    .btn-outline-success:hover {
+      background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(46, 125, 50, 0.3);
+    }
+
+    /* Light Green Button for Secondary Actions */
+    .btn-success-light {
+      background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%);
+      border: none;
+      color: var(--text-dark);
+      padding: 0.85rem 2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: all 0.4s ease;
+      box-shadow: 0 4px 15px rgba(165, 214, 167, 0.3);
+    }
+
+    .btn-success-light:hover {
+      background: linear-gradient(135deg, #C8E6C9 0%, var(--secondary) 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(165, 214, 167, 0.4);
+      color: var(--text-dark);
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    /* Form Styling */
+    .form-control, .form-select {
+      border: 1.5px solid #e9ecef;
+      padding: 0.85rem;
+      border-radius: 10px;
+      transition: all 0.3s;
+      background-color: var(--white);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary); /* 10% Deep Forest Green */
+      box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .form-label {
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Table Styling */
+    .table th {
+      background-color: var(--primary);
+      color: white;
+      font-weight: 600;
+      padding: 1rem;
+    }
+
+    .table td {
+      padding: 1rem;
+      vertical-align: middle;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: rgba(165, 214, 167, 0.1);
+    }
+
+    /* Total Price Display */
+    .total-price-card {
+      background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    /* Footer - 30% Soft Green */
+    .footer {
+      background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%); /* 30% Soft Green */
+      color: var(--text-dark);
+      padding: 1.2rem 0;
+      text-align: center;
+      margin-top: auto;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+    }
+
+    .footer p {
+      margin: 0;
+      opacity: 0.9;
+      letter-spacing: 0.3px;
+      font-weight: 600;
+    }
+
+    /* Profile Styling - Deep Forest Green */
+    .profile-dropdown {
+      color: var(--primary) !important; /* Deep Forest Green */
+      font-weight: 600;
+    }
+
+    .profile-dropdown:hover {
+      color: #1B5E20 !important; /* Darker shade for hover */
+    }
+
+    .profile-icon {
+      color: var(--primary) !important; /* Deep Forest Green */
+    }
+
+    /* Modal Styling */
+    .modal-header {
+      background: linear-gradient(135deg, var(--primary) 0%, #1B5E20 100%);
+      color: white;
+    }
+
+    /* Alert Styling */
+    .alert {
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    /* Filter Section Styling */
+    .filter-section {
+      background: linear-gradient(135deg, var(--secondary) 0%, #C8E6C9 100%);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 1rem;
+      }
+
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .form-card {
+        padding: 1.5rem;
+      }
+
+      .table-responsive {
+        font-size: 0.9rem;
+      }
+
+      .btn-sm {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Professional Background Design -->
+  <div class="background-design">
+    <div class="grid-pattern"></div>
+    <div class="shape-1"></div>
+    <div class="shape-2"></div>
+    <div class="shape-3"></div>
+    <div class="line-1"></div>
+    <div class="line-2"></div>
+  </div>
+
+  <!-- Navbar - 30% Soft Green -->
+  <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand fw-bold" href="#">Casador Agri</a>
+    <div class="ms-auto dropdown">
+      <a href="#" class="profile-dropdown text-decoration-none dropdown-toggle d-flex align-items-center" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-user-circle fa-lg me-2 profile-icon"></i> Secretary
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="profileDropdown">
+        <li><a class="dropdown-item" href="{{ url_for('secretary_dashboard') }}"><i class="fas fa-home me-2"></i>Dashboard</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+          <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+            <i class="fas fa-sign-out-alt me-2"></i>Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content - 60% Off-white -->
+  <div class="main-content">
+    <!-- Show flashed messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show mb-4" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <h2 class="text-success mb-0">Create Order</h2>
+      <a href="{{ url_for('secretary_dashboard') }}" class="btn btn-outline-success">
+        <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+      </a>
+    </div>
+
+    <form method="POST" action="{{ url_for('create_order') }}">
+      <!-- Customer Information Card -->
+      <div class="form-card">
+        <h4 class="text-success mb-4"><i class="fas fa-user me-2"></i>Customer Information</h4>
+        
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Customer Name</label>
+            <select name="customer_name" id="customerDropdown" class="form-select" required>
+              <option value="">Select Customer</option>
+              {% for customer in customers %}
+                <option value="{{ customer.customer_name }}" data-address="{{ customer.address }}">{{ customer.customer_name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Assigned Driver</label>
+            <select name="assigned_driver" class="form-select" required>
+              <option value="">Select Driver</option>
+              {% for driver in drivers %}
+                <option value="{{ driver.user_id }}">{{ driver.full_name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Address</label>
+            <textarea name="address" id="customerAddress" class="form-control" rows="3" required></textarea>
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Created At</label>
+            <input type="datetime-local" name="created_at" class="form-control" value="{{ current_time }}" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Section Card -->
+      <div class="table-card">
+        <div class="table-card-header d-flex justify-content-between align-items-center">
+          <span><i class="fas fa-boxes me-2"></i>Order Products</span>
+          <button type="button" class="btn btn-success-light btn-sm" data-bs-toggle="modal" data-bs-target="#productModal">
+            <i class="fas fa-plus me-1"></i> Add Products
+          </button>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover mb-0" id="orderProductsTable">
+            <thead class="table-success">
+              <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Kilos</th>
+                <th>Price</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Dynamically Added Rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Total Price Card -->
+      <div class="total-price-card">
+        <div class="row align-items-center">
+          <div class="col">
+            <h3 class="mb-0">Total: ₱<span id="totalPrice">0.00</span></h3>
+            <input type="hidden" name="total_price" id="total_price_input">
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-success-light btn-lg">
+              <i class="fas fa-paper-plane me-2"></i>Submit Order
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Product Modal -->
+  <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Select Products</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Category Filter Section -->
+          <div class="filter-section mb-4">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <label class="form-label text-dark fw-bold">Filter by Category</label>
+                <select id="categoryFilter" class="form-select">
+                  <option value="">All Categories</option>
+                  {% for category in categories %}
+                    <option value="{{ category }}">{{ category }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                <small class="text-dark">
+                  <i class="fas fa-info-circle me-1"></i>
+                  Select products to add to order
+                </small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead class="table-success">
+                <tr>
+                  <th>Product Name</th>
+                  <th>Quantity</th>
+                  <th>Kilos</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Select</th>
+                </tr>
+              </thead>
+              <tbody id="productTable">
+                {% for product in products %}
+                <tr data-category="{{ product.category }}">
+                  <td>{{ product.product_name }}</td>
+                  <td>
+                    <input type="number" min="1" value="1" class="form-control modal-qty" style="width: 80px;">
+                  </td>
+                  <td>
+                    <input type="number" min="1" value="{{ product.kilo_per_unit }}" class="form-control modal-kilos" style="width: 80px;" readonly>
+                  </td>
+                  <td>₱{{ product.price }}</td>
+                  <td>
+                    {% set stock = product.pm_stock|int if product.pm_stock|int > 0 else product.am_stock|int %}
+                    {{ stock }}
+                  </td>
+                  <td>
+                    {% if stock == 0 %}
+                      <button type="button" class="btn btn-secondary btn-sm" disabled>Out of Stock</button>
+                    {% else %}
+                      <button type="button" 
+                              class="btn btn-primary btn-sm select-product"
+                              data-id="{{ product.product_id }}"
+                              data-name="{{ product.product_name }}"
+                              data-price="{{ product.price }}"
+                              data-stock="{{ stock }}">
+                        <i class="fas fa-plus me-1"></i>Add
+                      </button>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logout Modal -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form method="POST" action="{{ url_for('logout') }}">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="logoutModalLabel"><i class="fas fa-sign-out-alt me-2"></i>Confirm Logout</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to log out of your secretary account?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success-light" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger">Logout</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer - 30% Soft Green -->
+  <footer class="footer">
+    <p class="mb-0">&copy; {{ current_year }} Casador Agri Business Suite</p>
+  </footer>
+
+  <script>
+    // Hide any flashed alert after 1 second
+    setTimeout(function() {
+      var alertEl = document.querySelector('.alert');
+      if (alertEl) { alertEl.style.display = 'none'; }
+    }, 1000);
+
+    // Filter by category
+    $("#categoryFilter").on("change", function(){
+      var selectedCategory = $(this).val();
+      $("#productTable tr").each(function(){
+        var rowCategory = $(this).data("category");
+        if(selectedCategory === "" || selectedCategory === rowCategory){
+          $(this).show();
+        } else {
+          $(this).hide();
+        }
+      });
+    });
+
+    // Add product to order table or update quantity if it already exists
+    $(document).on("click", ".select-product", function () {
+      var row = $(this).closest("tr");
+      var id = $(this).data("id");
+      var name = $(this).data("name");
+      var price = parseFloat($(this).data("price"));
+      var qty = parseInt(row.find(".modal-qty").val()) || 1;
+      var kilos = parseInt(row.find(".modal-kilos").val()) || 1;
+      var stock = parseInt($(this).data("stock")) || 0;
+
+      // Prevent adding more than available stock
+      if (qty > stock) {
+        alert("Cannot add more than available stock!");
+        return;
+      }
+
+      // Check if the product already exists in the order table
+      var existingRow = $(`#orderProductsTable tbody tr[data-id="${id}"]`);
+      if (existingRow.length > 0) {
+        // Update the quantity and kilos in the existing row
+        var existingQtyInput = existingRow.find(".qty-input");
+        var existingQty = parseInt(existingQtyInput.val()) || 0;
+        var newQty = existingQty + qty;
+
+        if (newQty > stock) {
+          alert("Cannot add more than available stock!");
+          return;
+        }
+
+        existingQtyInput.val(newQty);
+        updateTotal();
+      } else {
+        // Add a new row if the product doesn't exist
+        var orderRow = `
+          <tr data-id="${id}">
+            <td><input type="hidden" name="product_id[]" value="${id}">${name}</td>
+            <td><input type="number" name="quantity[]" class="form-control qty-input" value="${qty}" min="1" max="${stock}" data-price="${price}"></td>
+            <td><input type="number" name="kilos[]" class="form-control kilos-input" value="${kilos}" min="1"></td>
+            <td>₱${price.toFixed(2)}</td>
+            <td><button type="button" class="btn btn-danger btn-sm remove-product"><i class="fas fa-times"></i></button></td>
+          </tr>
+        `;
+        $("#orderProductsTable tbody").append(orderRow);
+        updateTotal();
+      }
+    });
+
+    // Update subtotal and total when quantity changes
+    $(document).on("input", ".qty-input", function(){
+      updateTotal();
+    });
+
+    // Remove product
+    $(document).on("click", ".remove-product", function(){
+      $(this).closest("tr").remove();
+      updateTotal();
+    });
+
+    // Update total
+    function updateTotal(){
+      var total = 0;
+      $("#orderProductsTable tbody tr").each(function(){
+        var qty = parseInt($(this).find(".qty-input").val()) || 0;
+        var price = parseFloat($(this).find(".qty-input").data("price")) || 0;
+        total += qty * price;
+      });
+      $("#totalPrice").text(total.toFixed(2));
+      $("#total_price_input").val(total.toFixed(2));
+    }
+
+    // Populate address field based on customer selection
+    $("#customerDropdown").on("change", function(){
+      var address = $(this).find("option:selected").data("address");
+      $("#customerAddress").val(address);
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
